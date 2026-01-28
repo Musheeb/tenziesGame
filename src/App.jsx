@@ -1,10 +1,12 @@
 import "./App.css";
 
+import Main from "./components/Main/Main.jsx";
+
 function App() {
   return (
-    <main className="main-container">
-      <h1>Tenzies Games</h1>
-    </main>
+    <div className="app-main-container">
+      <Main />
+    </div>
   );
 }
 
