@@ -1,8 +1,14 @@
+import { nanoid } from "nanoid";
+
 export function allNewDice() {
-  const randomNumbersArray = [];
+  const randomNumbers = [];
   for (let i = 0; i < 10; i++) {
-    randomNumbersArray.push(Math.floor(Math.random() * 7));
+    randomNumbers.push({
+      id: nanoid(),
+      value: Math.ceil(Math.random() * 6),
+      isHeld: false,
+    });
   }
-  console.log(randomNumbersArray);
-  return randomNumbersArray;
+  //   console.log(randomNumbers);
+  return randomNumbers;
 }
