@@ -1,13 +1,38 @@
 import "./Main.css";
 import Die from "../Die/Die.jsx";
+import Confetti from "react-confetti";
 
-import { useState } from "react";
+// import useWindowSize from "react-use/lib/useWindowSize";
+import { useState, useEffect } from "react";
 import { allNewDice } from "../../utils/die.js";
 
 export default function Main() {
+  //   const { width, height } = useWindowSize();
   const [numbers, setNumbers] = useState(allNewDice());
+  const [tenzies, setTenzeis] = useState(false);
+
+  useEffect(() => {
+    // console.log("Effect rendered");
+    const isHeld = numbers.every((item) => item.isHeld);
+    const firstElementValue = numbers[0].value;
+    const allSameValues = numbers.every(
+      (item) => item.value === firstElementValue
+    );
+    // const stillNotWon = numbers.find((item) => {
+    //   return item.value !== firstElementValue;
+    // });
+    if (isHeld && allSameValues) {
+      setTenzeis(true);
+      //   console.log("You won the game");
+    }
+  }, [numbers]);
 
   function rollDice() {
+    if (tenzies) {
+      setNumbers(allNewDice());
+      setTenzeis(false);
+      return;
+    }
     setNumbers((oldDice) => {
       return oldDice.map((die) => {
         return die.isHeld
@@ -29,10 +54,13 @@ export default function Main() {
     });
   }
 
-  console.log(numbers);
+  //   console.log(numbers);
+
+  const buttonText = tenzies ? "New Game" : "Roll";
 
   return (
     <main className="main-container">
+      {tenzies && <Confetti />}
       <div className="main-text-container">
         <h1 className="heading">Tenzies</h1>
         <p className="paragraph">
@@ -61,7 +89,7 @@ export default function Main() {
         <Die number={4} /> */}
       </div>
       <button className="roll-button" onClick={rollDice}>
-        Roll
+        {buttonText}
       </button>
     </main>
   );
